@@ -1,12 +1,15 @@
+import { RectangleData } from "./Canva";
+
 interface Props {
   headers: string[];
-  listItems: string[];
+  listItems?: string[] | RectangleData[];
+  onClickFc:(item:string | RectangleData )=>void;
 }
 
-function CustomedTable({ headers, listItems }: Props) {
+function CustomedTable({ headers, listItems, onClickFc}: Props) {
   return (
     <>
-      <div style={{ maxHeight: "500px", overflowY: "auto" }}>
+      <div style={{ maxHeight: "250px", maxWidth:"250px", overflowY: "auto", overflowX: "auto" }}>
         <table className="table table-success table-hover table-bordered">
           <thead>
             <tr>
@@ -18,9 +21,9 @@ function CustomedTable({ headers, listItems }: Props) {
             </tr>
           </thead>
           <tbody className="table-group-divider">
-            {listItems.map((item) => (
-              <tr key={item}>
-                <td>{item}</td>
+            {listItems && listItems.map((item, index) => (
+              <tr key={index} onClick={() => onClickFc(item)} >
+                <td> {typeof item === 'string'  ? item : `(${item.x.toFixed(3)}, ${item.y.toFixed(3)}) ${item.width}x${item.height} ${item.class_}`}</td>
               </tr>
             ))}
           </tbody>
